@@ -1,7 +1,7 @@
-(defproject armadillo "0.1.0-SNAPSHOT"
+(defproject armadillo "0.0.1"
   :description "Grab stocks from gurufocus.com"
-  :url "http://example.com/FIXME"
-  :license {:name "Eclipse Public License"
+  :url "https://www.github.com/rumel/armadillo"
+  :license {:name "The MIT License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/math.numeric-tower "0.0.4"]
