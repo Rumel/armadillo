@@ -5,11 +5,21 @@
 
 (def fiscal "Fiscal Period")
 
+(defn index-ttm
+  [row]
+  (let [ttm (.indexOf row "TTM")
+        ttm-preliminary (.indexOf row "TTMPreliminary")]
+    (if (> ttm -1)
+      ttm
+      (if (> ttm-preliminary -1)
+        ttm-preliminary
+        nil))))
+
 (defn- ten-year-values 
   [stock row]
   (let [ttm (stock fiscal)
         the-row (stock row)
-        index (.indexOf ttm "TTM")]
+        index (index-ttm ttm)]
     (if (= index 10)
       [(nth the-row 0) (nth the-row 9)]
       nil)))
@@ -18,7 +28,7 @@
   [stock row]
   (let [ttm (stock fiscal)
         the-row (stock row)
-        index (.indexOf ttm "TTM")]
+        index (index-ttm ttm)]
     (if (>= (- index 6) 0)
       [(nth the-row (- index 6) ) (nth the-row (- index 1))]
       nil)))
@@ -27,7 +37,7 @@
   [stock row]
   (let [ttm (stock fiscal)
         the-row (stock row)
-        index (.indexOf ttm "TTM")]
+        index (index-ttm ttm)]
     (if (>= (- index 2) 0)
       [(nth the-row (- index 2) ) (nth the-row (- index 1))]
       nil)))

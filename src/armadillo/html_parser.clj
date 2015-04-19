@@ -32,7 +32,7 @@
         k (first row-text)
         v (rest row-text)]
     (if (= k "Fiscal Period") 
-      (if (some #(= "TTM" %) v)
+      (if (some #(or (= "TTM" %) (= "TTMPreliminary" %)) v)
         {k v}
         {})
       (if (not (s/blank? k))

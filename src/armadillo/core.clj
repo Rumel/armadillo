@@ -1,7 +1,5 @@
 (ns armadillo.core
-  (:require [clojure.string :as s]
-            [armadillo.calculations :as c]
-            [armadillo.html-parser :as p]))
+  (:require [armadillo.html-parser :as p]))
 
 (defn format-percentage
   [values]
@@ -13,4 +11,3 @@
 (defn get-stock
  [string]
  (p/get-stock string))
-

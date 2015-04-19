@@ -1,4 +1,4 @@
-(defproject armadillo "0.0.1"
+(defproject armadillo "0.0.2"
   :description "Grab stocks from gurufocus.com"
   :url "https://www.github.com/rumel/armadillo"
   :license {:name "The MIT License"
