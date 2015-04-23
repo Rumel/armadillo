@@ -5,6 +5,10 @@
 
 (def fiscal "Fiscal Period")
 
+(defn- not-nil?
+  [object]
+  ((complement nil?) object))
+
 (defn index-ttm
   [row]
   (let [ttm (.indexOf row "TTM")
@@ -44,11 +48,13 @@
 
 (defn growth-rate
   [present past years]
-  (try
-    (double (- (math/expt (/ present past) (/ 1 years)) 1))
-    (catch Exception e (do
-                         (log/error e "There was an error in the growth rate calculation")
-                         nil))))
+  (if (and (not-nil? present) (not-nil? past) (not-nil? years))
+      (if (and (> present 0) (> past 0) (> years 0))
+          (try
+            (double (- (math/expt (/ present past) (/ 1 years)) 1))
+            (catch Exception e (do (log/error e "There was an error in the growth rate calculation") nil)))
+          "NEG")
+      nil))
 
 (defn all-rates
   [stock the-name]
