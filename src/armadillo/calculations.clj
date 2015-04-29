@@ -32,7 +32,5 @@
     (let [nine (values-for-years stock 9 row-name)
           five (values-for-years stock 5 row-name) 
           one (values-for-years stock 1 row-name)]
-      [(growth-rate nine 9)
-      (growth-rate five 5)
-      (growth-rate one 1)])
+      [(growth-rate nine 9) (growth-rate five 5) (growth-rate one 1)])
     nil))
