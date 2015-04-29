@@ -12,20 +12,12 @@
     (is (= true (#'armadillo.calculations/not-nil? {})))
     (is (= false (#'armadillo.calculations/not-nil? nil)))))
 
-(deftest index-ttm-test
-  (testing "index-ttm"
-    (is 
-      (let [ttm-row '(nil nil nil "TTM")]
-        (= 3 (index-ttm ttm-row))))
-    (is 
-      (let [ttm-preliminary '(nil nil "TTMPreliminary" nil)]
-        (= 2 (index-ttm ttm-preliminary))))))
 
 (deftest growth-rate-test 
   (testing "growth rate"
-    (is (= 0.2589254117941673 (growth-rate 100 10 10)))
-    (is (= nil (growth-rate nil 10 10)))
-    (is (= nil (growth-rate 10 nil 10)))
-    (is (= nil (growth-rate 10 10 nil)))
-    (is (= "NEG" (growth-rate -1 10 10)))
-    (is (= "NEG" (growth-rate 100 -1 10)))))
+    (is (= 0.2589254117941673 (growth-rate [10 100] 10)))
+    (is (= nil (growth-rate [10 nil] 10)))
+    (is (= nil (growth-rate [nil 10] 10)))
+    (is (= nil (growth-rate [10 10] nil)))
+    (is (= "NEG" (growth-rate [10 -1] 10)))
+    (is (= "NEG" (growth-rate [-1 100] 10)))))

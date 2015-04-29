@@ -3,51 +3,21 @@
             [clojure.string :as s]
             [clojure.tools.logging :as log]))
 
-(def fiscal "Fiscal Period")
-
 (defn- not-nil?
   [object]
   ((complement nil?) object))
 
-(defn index-ttm
-  [row]
-  (let [ttm (.indexOf row "TTM")
-        ttm-preliminary (.indexOf row "TTMPreliminary")]
-    (if (> ttm -1)
-      ttm
-      (if (> ttm-preliminary -1)
-        ttm-preliminary
-        nil))))
-
-(defn- ten-year-values 
-  [stock row]
-  (let [ttm (stock fiscal)
-        the-row (stock row)
-        index (index-ttm ttm)]
-    (if (= index 10)
-      [(nth the-row 0) (nth the-row 9)]
-      nil)))
-
-(defn- five-year-values 
-  [stock row]
-  (let [ttm (stock fiscal)
-        the-row (stock row)
-        index (index-ttm ttm)]
-    (if (>= (- index 6) 0)
-      [(nth the-row (- index 6) ) (nth the-row (- index 1))]
-      nil)))
-
-(defn- one-year-values 
-  [stock row]
-  (let [ttm (stock fiscal)
-        the-row (stock row)
-        index (index-ttm ttm)]
-    (if (>= (- index 2) 0)
-      [(nth the-row (- index 2) ) (nth the-row (- index 1))]
-      nil)))
+(defn- values-for-years
+  [stock years row-name]
+  (let [this-year (dec (stock :index))
+        other-year (- this-year years)
+        the-row ((stock :data) row-name)]
+    (if (>= other-year 0)
+        [(nth the-row other-year) (nth the-row this-year)]
+        nil)))
 
 (defn growth-rate
-  [present past years]
+  [[past present] years]
   (if (and (not-nil? present) (not-nil? past) (not-nil? years))
       (if (and (> present 0) (> past 0) (> years 0))
           (try
@@ -57,12 +27,12 @@
       nil))
 
 (defn all-rates
-  [stock the-name]
+  [stock row-name]
   (if stock
-    (let [ten (ten-year-values stock the-name)
-          five (five-year-values stock the-name) 
-          one (one-year-values stock the-name)]
-      [(growth-rate (last ten) (first ten) 10)
-      (growth-rate (last five) (first five) 5)
-      (growth-rate (last one) (first one) 1)])
+    (let [nine (values-for-years stock 9 row-name)
+          five (values-for-years stock 5 row-name) 
+          one (values-for-years stock 1 row-name)]
+      [(growth-rate nine 9)
+      (growth-rate five 5)
+      (growth-rate one 1)])
     nil))

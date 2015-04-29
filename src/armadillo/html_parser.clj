@@ -39,11 +39,29 @@
         {(s/trim (s/replace k #"\u00A0" " ")) (map u/convert-number v)}
         {}))))
 
-(defn get-stock
-  "Return a map of the stock data"
+(defn index-ttm
+  [row]
+  (let [ttm (.indexOf row "TTM")
+        ttm-preliminary (.indexOf row "TTMPreliminary")]
+    (if (> ttm -1)
+      ttm
+      (if (> ttm-preliminary -1)
+        ttm-preliminary
+        nil))))
+
+(defn get-data
   [stock-symbol]
   (->> (financial-page stock-symbol)
        get-table
        get-rows
        (map extract-key)
        (apply merge)))
+
+(defn get-stock
+  "Return a map of the stock data"
+  [stock-symbol]
+  (let [data (get-data stock-symbol)
+        row (data "Fiscal Period")
+        index (index-ttm row)]
+    {:data data
+     :index index}))
