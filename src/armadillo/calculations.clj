@@ -26,6 +26,21 @@
           "NEG")
       nil))
 
+(defn get-row
+  [stock row-name]
+  ((stock :data) row-name))
+
+(defn value-for-year
+  [stock year row-name]
+  (if stock
+    (let [this-year (dec (stock :index))
+          wanted-year (- this-year year)
+          the-row ((stock :data) row-name)]
+      (if (>= wanted-year 0)
+          (nth the-row wanted-year)
+          nil))
+    nil))
+
 (defn all-rates
   [stock row-name]
   (if stock
