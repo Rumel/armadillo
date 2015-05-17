@@ -36,7 +36,7 @@
     (let [this-year (dec (stock :index))
           wanted-year (- this-year year)
           the-row ((stock :data) row-name)]
-      (if (>= wanted-year 0)
+      (if (and (not (empty? the-row))  (>= wanted-year 0))
           (nth the-row wanted-year)
           nil))
     nil))
